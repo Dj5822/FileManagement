@@ -68,9 +68,12 @@ main_dir = "C:\\Users\\Dj582\\Downloads\\"
 print("List of operations:")
 print("merge (will merge two folders and name files numerically from starting from 0)")
 print("rename (will rename the files within a folder to have the same length of digits.")
-selection = input("Select an operation: ")
-
-if selection == "merge":
-    merge(main_dir)
-elif selection == "rename":
-    rename(main_dir)
+print("exit (will exit the program)")
+while true:
+    selection = input("Select an operation: ")
+    if selection == "merge":
+        merge(main_dir)
+    elif selection == "rename":
+        rename(main_dir)
+    elif selection == "exit":
+        break
