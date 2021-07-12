@@ -2,11 +2,7 @@ import shutil
 import os
 
 
-def merge(directory):
-    folder_name = input("Input the name of the main folder: ")
-    merge_folder_name = input("Input the the folder that you want to merge with the main folder: ")
-    working_directory = "{}{}".format(directory, folder_name)
-    target_directory = "{}{}".format(directory, merge_folder_name)
+def merge(working_directory, target_directory):
     os.chdir(working_directory)
 
     print(os.getcwd())
@@ -33,9 +29,7 @@ def merge(directory):
     print("Files have been merged successfully.")
 
 
-def rename(directory):
-    folder_name = input("Input the folder name: ")
-    working_directory = "{}{}".format(directory, folder_name)
+def rename(working_directory):
     os.chdir(working_directory)
 
     print(os.getcwd())
@@ -65,15 +59,34 @@ Program path is set to C:\\Users\\Dj582\\Downloads\\
 print("Assume that the folder located in downloads.")
 main_dir = "C:\\Users\\Dj582\\Downloads\\"
 
-print("List of operations:")
-print("merge (will merge two folders and name files numerically from starting from 0)")
-print("rename (will rename the files within a folder to have the same length of digits.")
-print("exit (will exit the program)")
 while True:
+    files = os.listdir(main_dir)
+    print("Available files:")
+    for i in range(len(files)):
+        print("{}) {}".format(i+1, files[i]))
+
+    print("List of operations:")
+    print("merge (will merge two folders and name files numerically from starting from 0)")
+    print("rename (will rename the files within a folder to have the same length of digits.")
+    print("exit (will exit the program)")
     selection = input("Select an operation: ")
+
     if selection == "merge":
-        merge(main_dir)
+        try:
+            folder_num = int(input("Select folder number: "))
+            main_folder = os.path.join(main_dir, files[folder_num-1])
+            merge_folder_num = int(input("Select the the folder that you want to merge with the main folder: "))
+            merge_folder = os.path.join(main_dir, files[merge_folder_num-1])
+            print(main_folder)
+            merge(main_folder, merge_folder)
+        except TypeError:
+            print("Please enter a number.")
     elif selection == "rename":
-        rename(main_dir)
+        try:
+            folder_num = int(input("Select folder number: "))
+            main_folder = os.path.join(main_dir, files[folder_num-1])
+            rename(main_folder)
+        except TypeError:
+            print("Please enter a number.")
     elif selection == "exit":
         break
