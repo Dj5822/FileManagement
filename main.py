@@ -29,27 +29,22 @@ def merge(working_directory, target_directory):
     print("Files have been merged successfully.")
 
 
-def rename(working_directory):
+def rename(working_directory, start_num=0):
     os.chdir(working_directory)
 
     print(os.getcwd())
 
-    file_extension = os.listdir()[0].rsplit(".")[1]
-    max_len = 0
+    file_extension = os.listdir()[0].rsplit(".")[-1]
+    digit_count = len(str(start_num + len(os.listdir())))
+    current_num = start_num
 
     for file in os.listdir():
-        if len(file.rsplit(".")[0]) > max_len:
-            max_len = len(file.rsplit(".")[0])
-
-    for file in os.listdir():
-        file_number = file.rsplit(".")[0]
-        if len(file.rsplit(".")[0]) != max_len:
-            while len(file_number) < max_len:
-                file_number = "0"+file_number
-            new_name = "{}.{}".format(file_number, file_extension)
-            shutil.move("{}\\{}".format(working_directory, file), "{}\\{}".format(working_directory, new_name))
-
-    print("Files within the folder have been renamed successfully.")
+        current_name = str(current_num)
+        while len(current_name) < digit_count:
+            current_name = "0" + current_name
+        new_name = "{}.{}".format(current_name, file_extension)
+        shutil.move("{}\\{}".format(working_directory, file), "{}\\{}".format(working_directory, new_name))
+        current_num += 1
 
 
 """
@@ -84,8 +79,9 @@ while True:
     elif selection == "rename":
         try:
             folder_num = int(input("Select folder number: "))
+            start = int(input("Input start number: "))
             main_folder = os.path.join(main_dir, files[folder_num-1])
-            rename(main_folder)
+            rename(main_folder, start)
         except TypeError:
             print("Please enter a number.")
     elif selection == "exit":
