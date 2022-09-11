@@ -1,10 +1,13 @@
 # FileManagement
+
+
 This program can rename files in a particular pattern and merge two folders together.
+
 
 # Rename
 Used to rename all the files within the folder such that all file names have the same number of digits.
 
-## Example 
+### Example 
 If there exists the following files within a folder: 
 1.png 22.png 390.png
 
@@ -14,10 +17,11 @@ Then after renaming, all the files we be changed to:
 # Merge
 Used to merge to folders together while maintaining order.
 
-## Example 
+### Example 
 If there exists the following two folders:
-folder1: 1.png 22.png 390.png
-folder2: 2.png 23.png 391.png
 
-After merge the folder will look like this:
-folder1: 001.png 002.png 022.png 023.png 390.png 391.png
+Directory 1: 1.png, 2.png, 3.png
+
+Directory 2: 1.png, 2.png, 3.png
+
+Merged result: 1.png, 2.png, 3.png, 4.png, 5.png, 6.png
