@@ -1,10 +1,27 @@
-# FileManagement
-
-
+# File Management
 This program can rename files in a particular pattern and merge two folders together.
 
+## How to run the program
+First, make sure that the latest version of Python is installed.
 
-# Rename
+Next, navigate to the directory where main.py is located.
+
+Try the following commands:
+
+`py main.py`
+
+`python main.py`
+
+`python3 main.py`
+
+If that doesn't work, then you probably screwed up your Python installation or something.
+
+## Type checking
+When modifying this project, you use the following command to check typing issues:
+
+`py -m mypy main.py`
+
+## Rename
 Used to rename all the files within the folder such that all file names have the same number of digits.
 
 ### Example 
@@ -14,7 +31,7 @@ If there exists the following files within a folder:
 Then after renaming, all the files we be changed to: 
 001.png 022.png 390.png
 
-# Merge
+## Merge
 Used to merge to folders together while maintaining order.
 
 ### Example 
