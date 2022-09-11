@@ -8,18 +8,18 @@ Next, navigate to the directory where main.py is located.
 
 Try the following commands:
 
-`py main.py`
+`py filemanagement.py`
 
-`python main.py`
+`python filemanagement.py`
 
-`python3 main.py`
+`python3 filemanagement.py`
 
 If that doesn't work, then you probably screwed up your Python installation or something.
 
 ## Type checking
 When modifying this project, you use the following command to check typing issues:
 
-`py -m mypy main.py`
+`py -m mypy filemanagement.py`
 
 ## Rename
 Used to rename all the files within the folder such that all file names have the same number of digits.
