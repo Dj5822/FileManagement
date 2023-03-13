@@ -2,10 +2,9 @@ import shutil
 import os
 
 
-def merge(working_directory: str, target_directory: str) -> None:
-    os.chdir(working_directory)
-
-    print(os.getcwd())
+def merge(directory: str, target_directory: str) -> None:
+    if not change_directory(directory):
+        print("Failed to find the specified directory")
 
     file_extension = os.listdir()[0].rsplit(".")[1]
 
@@ -24,15 +23,14 @@ def merge(working_directory: str, target_directory: str) -> None:
     for file in os.listdir():
         file_number = int(file.rsplit(".")[0]) + max_num
         new_name = "{}.{}".format(str(file_number), file_extension)
-        shutil.move("{}\\{}".format(target_directory, file), "{}\\{}".format(working_directory, new_name))
+        shutil.move("{}\\{}".format(target_directory, file), "{}\\{}".format(directory, new_name))
 
     print("Files have been merged successfully.")
 
 
-def rename(working_directory: str, start_num: int=0, digit_count: int=3) -> None:
-    os.chdir(working_directory)
-
-    print(os.getcwd())
+def rename(directory: str, start_num: int = 0, digit_count: int = 3) -> None:
+    if not change_directory(directory):
+        print("Failed to find the specified directory")
 
     file_extension = os.listdir()[0].rsplit(".")[-1]
     if digit_count is None:
@@ -44,20 +42,13 @@ def rename(working_directory: str, start_num: int=0, digit_count: int=3) -> None
         while len(current_name) < digit_count:
             current_name = "0" + current_name
         new_name = "{}.{}".format(current_name, file_extension)
-        shutil.move("{}\\{}".format(working_directory, file), "{}\\{}".format(working_directory, new_name))
+        shutil.move("{}\\{}".format(directory, file), "{}\\{}".format(directory, new_name))
         current_num += 1
 
     print("Files within the folder have been renamed successfully.")
 
 
-def get_file_extension(file_name: str) -> str:
-    """
-    Given a file name, returns the file extension.
-    """
-    return file_name.rsplit(".")[-1]
-
-
-def extend(working_directory: str) -> None:
+def extend(directory: str, digit_count: int = 4) -> None:
     """
     Given a directory of files, it will rename all the files within that directory
     such that all the file names are the same length.
@@ -65,19 +56,39 @@ def extend(working_directory: str) -> None:
     until the length matches the largest file length.
     """
 
-    # Set the working directory.
-    os.chdir(working_directory)
-    print(os.getcwd())
-
+    if not change_directory(directory):
+        print("Failed to find the specified directory")
     file_extension: str = get_file_extension(os.listdir()[0])
-    digit_count: int = 4
 
     for file in os.listdir():
         current_name = file.rsplit(".")[0]
         while len(current_name) < digit_count:
             current_name = "0" + current_name
         new_name = "{}.{}".format(current_name, file_extension)
-        shutil.move("{}\\{}".format(working_directory, file), "{}\\{}".format(working_directory, new_name))
+        shutil.move("{}\\{}".format(directory, file), "{}\\{}".format(directory, new_name))
+
+
+def change_directory(new_path: str) -> bool:
+    """
+    Set the working directory.
+    Returns true when directory changed successfully.
+    Otherwise, returns false.
+    """
+    try:
+        os.chdir(new_path)
+        print("Currently in: " + os.getcwd())
+        return True
+    except OSError:
+        return False
+    finally:
+        return False
+
+
+def get_file_extension(file_name: str) -> str:
+    """
+    Given a file name, returns the file extension.
+    """
+    return file_name.rsplit(".")[-1]
 
 
 def start() -> None:
@@ -92,7 +103,7 @@ def start() -> None:
         files = os.listdir(main_dir)
         print("Available files:")
         for i in range(len(files)):
-            print("{}) {}".format(i+1, files[i]))
+            print("{}) {}".format(i + 1, files[i]))
 
         print("List of operations:")
         print("merge (will merge two folders and name files numerically from starting from 0)")
@@ -104,9 +115,9 @@ def start() -> None:
         if selection == "merge":
             try:
                 folder_num = int(input("Select folder number: "))
-                main_folder = os.path.join(main_dir, files[folder_num-1])
+                main_folder = os.path.join(main_dir, files[folder_num - 1])
                 merge_folder_num = int(input("Select the the folder that you want to merge with the main folder: "))
-                merge_folder = os.path.join(main_dir, files[merge_folder_num-1])
+                merge_folder = os.path.join(main_dir, files[merge_folder_num - 1])
                 print(main_folder)
                 merge(main_folder, merge_folder)
             except TypeError:
@@ -115,14 +126,14 @@ def start() -> None:
             try:
                 folder_num = int(input("Select folder number: "))
                 start = int(input("Input start number: "))
-                main_folder = os.path.join(main_dir, files[folder_num-1])
+                main_folder = os.path.join(main_dir, files[folder_num - 1])
                 rename(main_folder, start)
             except TypeError:
                 print("Please enter a number.")
         elif selection == "extend":
             try:
                 folder_num = int(input("Select folder number: "))
-                main_folder = os.path.join(main_dir, files[folder_num-1])
+                main_folder = os.path.join(main_dir, files[folder_num - 1])
                 extend(main_folder)
             except TypeError:
                 print("Please enter a number.")
