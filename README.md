@@ -8,8 +8,10 @@ This program can rename files in a particular pattern and merge two folders toge
 - You must have Poetry installed
 
 Run the following commands:
+
 `poetry install`
-`poetry run start`
+
+`poetry run py ./file_management/file_manager.py`
 
 ## Type checking
 

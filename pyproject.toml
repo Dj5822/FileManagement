@@ -7,14 +7,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+typer = "^0.15.1"
+python-inquirer = "^1.0.3"
+
+[tool.poetry.group.dev.dependencies]
 mypy = "^1.14.0"
 
-
-typer = "^0.15.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-start = 'file_management.file_manager:main'
-verify = ''
