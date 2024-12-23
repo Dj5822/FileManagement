@@ -91,7 +91,7 @@ def get_file_extension(file_name: str) -> str:
     return file_name.rsplit(".")[-1]
 
 
-def start() -> None:
+def main() -> None:
     """
     Program path is set to C:\\Users\\Dj582\\Downloads\\
     """
@@ -139,6 +139,3 @@ def start() -> None:
                 print("Please enter a number.")
         elif selection == "exit":
             break
-
-
-start()
