@@ -93,13 +93,23 @@ def rename(
         digit_count = len(str(start + len(os.listdir())))
     current_num = start
 
-    for file in os.listdir():
-        current_name = str(current_num)
-        if len(current_name) < digit_count:
-            current_name = "0" * (digit_count - len(current_name)) + current_name
-        new_name = "{}.{}".format(current_name, file_extension)
+    # for file in os.listdir():
+    #     current_name = file.rsplit(".")[0]
+    #     if len(current_name) < digit_count:
+    #         current_name = "0" * (digit_count - len(current_name)) + current_name
+    #     new_name = "{}.{}".format(current_name, file_extension)
+    #     shutil.move("{}\\{}".format(main_folder, file), "{}\\temp{}".format(main_folder, new_name))
+
+    for file in sorted(os.listdir()):
+        file_num: str = str(current_num)
+        if len(file_num) < digit_count:
+            file_num = "0" * (digit_count - len(file_num)) + file_num
+        new_name = "temp{}.{}".format(file_num, file_extension)
         shutil.move("{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name))
         current_num += 1
+
+    for file in sorted(os.listdir()):
+        shutil.move("{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, file[4:]))
 
     print("Files within the folder have been renamed successfully.")
 
