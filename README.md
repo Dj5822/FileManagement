@@ -5,17 +5,16 @@ This program can rename files in a particular pattern and merge two folders toge
 ## Application setup
 
 - You must have Python3+ installed
-- You must have Poetry installed
+- You must have uv installed
 
 Run the following commands:
 
 `pipx install uv`
-
 `uv run main.py`
 
 ## Type checking
 
-When modifying this project, you use the following command to check typing issues:
+When modifying this project, you use the following command to check formatting and typing issues:
 
 `uvx mypy main.py`
 `uvx ruff check main.py`
