@@ -1,18 +1,10 @@
-[tool.poetry]
-name = "file-management"
+[project]
+name = "file-manager"
 version = "0.1.0"
-description = ""
-authors = ["Dylan Jung <Dj5822@gmail.com>"]
+description = "Add your description here"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.12"
-typer = "^0.15.1"
-inquirer = "^3.4.0"
-
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.14.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.14"
+dependencies = [
+    "inquirer>=3.4.1",
+    "typer>=0.20.0",
+]

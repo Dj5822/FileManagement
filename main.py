@@ -182,4 +182,8 @@ def get_file_extension(file_name: str) -> str:
     """
     return file_name.rsplit(".")[-1]
 
-app()
+def main():
+    app()
+
+if __name__ == "__main__":
+    main()
