@@ -9,15 +9,17 @@ This program can rename files in a particular pattern and merge two folders toge
 
 Run the following commands:
 
-`poetry install`
+`pipx install uv`
 
-`poetry run py ./file_management/file_manager.py`
+`uv run main.py`
 
 ## Type checking
 
 When modifying this project, you use the following command to check typing issues:
 
-`poetry run mypy ./file_management/file_manager.py`
+`uvx mypy main.py`
+`uvx ruff check main.py`
+`uvx ruff format main.py`
 
 ## Rename
 

@@ -11,10 +11,13 @@ app = typer.Typer()
 err_console = Console(stderr=True)
 default_path = "C:\\Users\\Dj582\\Downloads\\"
 
+
 @app.command()
 def merge(
-        path: Annotated[str, typer.Option(help="The directory to apply the command.")] = default_path
-    ) -> None:
+    path: Annotated[
+        str, typer.Option(help="The directory to apply the command.")
+    ] = default_path,
+) -> None:
     """
     Used to merge to folders together while maintaining order.
     """
@@ -55,16 +58,23 @@ def merge(
     for file in os.listdir():
         file_number = int(file.rsplit(".")[0]) + max_num
         new_name = "{}.{}".format(str(file_number), file_extension)
-        shutil.move("{}\\{}".format(merge_folder, file), "{}\\{}".format(path, new_name))
+        shutil.move(
+            "{}\\{}".format(merge_folder, file), "{}\\{}".format(path, new_name)
+        )
 
     print("Files have been merged successfully.")
 
+
 @app.command()
 def rename(
-        start: Annotated[int, typer.Option(help="The name of the starting file.")] = 0,
-        digit_count: Annotated[int, typer.Option(help="The number of digits the output files should have.")] = 4,
-        path: Annotated[str, typer.Option(help="The directory to apply the command.")] = default_path
-    ) -> None:
+    start: Annotated[int, typer.Option(help="The name of the starting file.")] = 0,
+    digit_count: Annotated[
+        int, typer.Option(help="The number of digits the output files should have.")
+    ] = 4,
+    path: Annotated[
+        str, typer.Option(help="The directory to apply the command.")
+    ] = default_path,
+) -> None:
     """
     Used to rename all the files within the folder such that all file names have the same number of digits.
 
@@ -105,19 +115,28 @@ def rename(
         if len(file_num) < digit_count:
             file_num = "0" * (digit_count - len(file_num)) + file_num
         new_name = "temp{}.{}".format(file_num, file_extension)
-        shutil.move("{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name))
+        shutil.move(
+            "{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name)
+        )
         current_num += 1
 
     for file in sorted(os.listdir()):
-        shutil.move("{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, file[4:]))
+        shutil.move(
+            "{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, file[4:])
+        )
 
     print("Files within the folder have been renamed successfully.")
 
+
 @app.command()
 def extend(
-           digit_count: Annotated[int, typer.Option(help="The number of digits the output files should have.")] = 4,
-           path: Annotated[str, typer.Option(help="The directory to apply the command.")] = default_path
-    ) -> None:
+    digit_count: Annotated[
+        int, typer.Option(help="The number of digits the output files should have.")
+    ] = 4,
+    path: Annotated[
+        str, typer.Option(help="The directory to apply the command.")
+    ] = default_path,
+) -> None:
     """
     Given a directory of files, it will rename all the files within that directory
     such that all the file names are the same length.
@@ -144,7 +163,10 @@ def extend(
         if len(current_name) < digit_count:
             current_name = "0" * (digit_count - len(current_name)) + current_name
         new_name = "{}.{}".format(current_name, file_extension)
-        shutil.move("{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name))
+        shutil.move(
+            "{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name)
+        )
+
 
 def select_directory(path: str = default_path) -> str:
     """
@@ -154,14 +176,15 @@ def select_directory(path: str = default_path) -> str:
 
     questions = [
         inquirer.List(
-            'directory',
+            "directory",
             message="Select a directory",
             choices=directories,
         )
     ]
 
     selected_directory = inquirer.prompt(questions)
-    return selected_directory['directory']
+    return selected_directory["directory"]
+
 
 def change_directory(new_path: str) -> bool:
     """
@@ -176,14 +199,17 @@ def change_directory(new_path: str) -> bool:
     except OSError:
         return False
 
+
 def get_file_extension(file_name: str) -> str:
     """
     Given a file name, returns the file extension.
     """
     return file_name.rsplit(".")[-1]
 
+
 def main():
     app()
+
 
 if __name__ == "__main__":
     main()
