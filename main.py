@@ -6,11 +6,14 @@ import typer # type: ignore
 from rich import print # type: ignore
 from rich.console import Console # type: ignore
 from typing_extensions import Annotated
+import yaml
 
 app = typer.Typer()
 err_console = Console(stderr=True)
-default_path = "C:\\Users\\Dj582\\Downloads\\"
-
+CONFIG_FILE_PATH = './config.yaml'
+with open(CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
+    config_data = yaml.load(file, Loader=yaml.FullLoader)
+    default_path = config_data["default-path"]
 
 @app.command()
 def merge(
@@ -209,7 +212,6 @@ def get_file_extension(file_name: str) -> str:
 
 def main():
     app()
-
 
 if __name__ == "__main__":
     main()

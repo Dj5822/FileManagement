@@ -12,6 +12,11 @@ Run the following commands:
 `pipx install uv`
 `uv run main.py`
 
+## Config file
+
+Inside the config.yaml file you can specify the `default-path` to override the default path for the file operations.
+Alternatively, you can pass in the path you want to use a command line option when running any of the commands.
+
 ## Type checking
 
 When modifying this project, you use the following command to check formatting and typing issues:
