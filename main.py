@@ -1,10 +1,10 @@
 import shutil
 import os
 from pathlib import Path
-import inquirer
-import typer
-from rich import print
-from rich.console import Console
+import inquirer # type: ignore
+import typer # type: ignore
+from rich import print # type: ignore
+from rich.console import Console # type: ignore
 from typing_extensions import Annotated
 
 app = typer.Typer()
