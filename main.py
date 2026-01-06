@@ -38,7 +38,7 @@ def merge(
     if not change_directory(merge_folder):
         err_console.print("Failed to find the specified path")
     else:
-        print("Merging {} to {}".format(merge_folder, survivor_folder))
+        print(f"Merging {merge_folder} to {survivor_folder}")
 
     if len(os.listdir()) == 0:
         print("The specified directory is empty.")
@@ -46,23 +46,15 @@ def merge(
 
     file_extension = os.listdir()[0].rsplit(".")[1]
 
-    # code below is used to extend the file name.
-    max_len = 0
-    max_num = 0
-
-    for file in os.listdir():
-        if len(file.rsplit(".")[0]) > max_len:
-            max_len = len(file.rsplit(".")[0])
-        if int(file.rsplit(".")[0]) > max_num:
-            max_num = int(file.rsplit(".")[0])
+    max_num = max(int(file.rsplit(".")[0]) for file in os.listdir())
 
     os.chdir(merge_folder)
 
     for file in os.listdir():
         file_number = int(file.rsplit(".")[0]) + max_num
-        new_name = "{}.{}".format(str(file_number), file_extension)
+        new_name = f"{str(file_number)}.{file_extension}"
         shutil.move(
-            "{}\\{}".format(merge_folder, file), "{}\\{}".format(path, new_name)
+            f"{merge_folder}\\{file}", f"{path}\\{new_name}"
         )
 
     print("Files have been merged successfully.")
@@ -95,7 +87,7 @@ def rename(
         err_console.print("Failed to find the specified path")
         return
     else:
-        print("Renaming file in {}".format(main_folder))
+        print(f"Renaming file in {main_folder}")
 
     if len(os.listdir()) == 0:
         print("The specified directory is empty.")
@@ -106,26 +98,21 @@ def rename(
         digit_count = len(str(start + len(os.listdir())))
     current_num = start
 
-    # for file in os.listdir():
-    #     current_name = file.rsplit(".")[0]
-    #     if len(current_name) < digit_count:
-    #         current_name = "0" * (digit_count - len(current_name)) + current_name
-    #     new_name = "{}.{}".format(current_name, file_extension)
-    #     shutil.move("{}\\{}".format(main_folder, file), "{}\\temp{}".format(main_folder, new_name))
+    FILLER_DIGIT_COUNT = 30
 
     for file in sorted(os.listdir()):
         file_num: str = str(current_num)
-        if len(file_num) < digit_count:
-            file_num = "0" * (digit_count - len(file_num)) + file_num
-        new_name = "temp{}.{}".format(file_num, file_extension)
+        if len(file_num) < FILLER_DIGIT_COUNT:
+            file_num = "0" * (FILLER_DIGIT_COUNT - len(file_num)) + file_num
+        new_name = f"temp{file_num}.{file_extension}"
         shutil.move(
-            "{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name)
+            f"{main_folder}\\{file}", f"{main_folder}\\{new_name}"
         )
         current_num += 1
 
     for file in sorted(os.listdir()):
         shutil.move(
-            "{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, file[4:])
+            f"{main_folder}\\{file}", f"{main_folder}\\{file[4:]}"
         )
 
     print("Files within the folder have been renamed successfully.")
@@ -153,7 +140,7 @@ def extend(
         err_console.print("Failed to find the specified path")
         return
     else:
-        print("Extending {}".format(main_folder))
+        print(f"Extending {main_folder}")
 
     if len(os.listdir()) == 0:
         print("The specified directory is empty.")
@@ -165,9 +152,9 @@ def extend(
         current_name = file.rsplit(".")[0]
         if len(current_name) < digit_count:
             current_name = "0" * (digit_count - len(current_name)) + current_name
-        new_name = "{}.{}".format(current_name, file_extension)
+        new_name = f"{current_name}.{file_extension}"
         shutil.move(
-            "{}\\{}".format(main_folder, file), "{}\\{}".format(main_folder, new_name)
+            f"{main_folder}\\{file}", f"{main_folder}\\{new_name}"
         )
 
 
