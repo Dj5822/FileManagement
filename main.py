@@ -100,7 +100,7 @@ def rename(
 
     FILLER_DIGIT_COUNT = 30
 
-    for file in sorted(os.listdir()):
+    for file in os.listdir():
         file_num: str = str(current_num)
         if len(file_num) < FILLER_DIGIT_COUNT:
             file_num = "0" * (FILLER_DIGIT_COUNT - len(file_num)) + file_num
@@ -110,9 +110,11 @@ def rename(
         )
         current_num += 1
 
+    print(current_num)
+
     for file in sorted(os.listdir()):
         shutil.move(
-            f"{main_folder}\\{file}", f"{main_folder}\\{file[4:]}"
+            f"{main_folder}\\{file}", f"{main_folder}\\{file[FILLER_DIGIT_COUNT-len(str(current_num))+len("temp"):]}"
         )
 
     print("Files within the folder have been renamed successfully.")
@@ -120,9 +122,6 @@ def rename(
 
 @app.command()
 def extend(
-    digit_count: Annotated[
-        int, typer.Option(help="The number of digits the output files should have.")
-    ] = 4,
     path: Annotated[
         str, typer.Option(help="The directory to apply the command.")
     ] = default_path,
@@ -145,17 +144,10 @@ def extend(
     if len(os.listdir()) == 0:
         print("The specified directory is empty.")
         return
+    
+    files = os.listdir()
 
-    file_extension: str = get_file_extension(os.listdir()[0])
-
-    for file in os.listdir():
-        current_name = file.rsplit(".")[0]
-        if len(current_name) < digit_count:
-            current_name = "0" * (digit_count - len(current_name)) + current_name
-        new_name = f"{current_name}.{file_extension}"
-        shutil.move(
-            f"{main_folder}\\{file}", f"{main_folder}\\{new_name}"
-        )
+    extend_files(files, main_folder)
 
 
 def select_directory(path: str = default_path) -> str:
@@ -196,6 +188,17 @@ def get_file_extension(file_name: str) -> str:
     """
     return file_name.rsplit(".")[-1]
 
+
+def extend_files(files, main_folder):
+    file_extension: str = get_file_extension(files[0])
+
+    current_names = { file : file.rsplit(".")[0] for file in files }
+    digit_count = max(len(file) for file in current_names.values())
+    extended_names = { file : "0" * max(digit_count - len(name), 0) + name for file, name in current_names.items() }
+    new_names = { file: f"{name}.{file_extension}" for file, name in extended_names.items() }
+
+    for file, name in new_names.items():
+        shutil.move(f"{main_folder}\\{file}", f"{main_folder}\\{name}")
 
 def main():
     app()
