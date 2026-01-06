@@ -93,28 +93,20 @@ def rename(
         print("The specified directory is empty.")
         return
 
-    file_extension = os.listdir()[0].rsplit(".")[-1]
-    if digit_count is None:
-        digit_count = len(str(start + len(os.listdir())))
-    current_num = start
+    extend_files(os.listdir(), main_folder)
 
-    FILLER_DIGIT_COUNT = 30
+    files = sorted(os.listdir())
+    file_extension = files[0].rsplit(".")[-1]
 
-    for file in os.listdir():
-        file_num: str = str(current_num)
-        if len(file_num) < FILLER_DIGIT_COUNT:
-            file_num = "0" * (FILLER_DIGIT_COUNT - len(file_num)) + file_num
-        new_name = f"temp{file_num}.{file_extension}"
+    digit_count = len(str(start + len(files))) if digit_count is None else digit_count
+
+    file_nums = [str(file_num) for file_num in range(start,start+len(files))]
+    processed_names = { file : "0" * max(digit_count - len(file_nums[i]), 0) + file_nums[i] for i, file in enumerate(files) }
+    new_names = { file: f"{name}.{file_extension}" for file, name in processed_names.items() }
+
+    for file, name in new_names.items():
         shutil.move(
-            f"{main_folder}\\{file}", f"{main_folder}\\{new_name}"
-        )
-        current_num += 1
-
-    print(current_num)
-
-    for file in sorted(os.listdir()):
-        shutil.move(
-            f"{main_folder}\\{file}", f"{main_folder}\\{file[FILLER_DIGIT_COUNT-len(str(current_num))+len("temp"):]}"
+            f"{main_folder}\\{file}", f"{main_folder}\\{name}"
         )
 
     print("Files within the folder have been renamed successfully.")
