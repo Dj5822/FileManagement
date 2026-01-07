@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 import inquirer  # type: ignore
 from rich import print  # type: ignore
+from rich.progress import track
+from rich.table import Table
 import yaml
 
 
@@ -56,7 +58,13 @@ def get_file_extension(file_name: str) -> str:
     """
     return Path(file_name).suffix
 
+
 def extend_files(files: list[str], target_folder: Path, filler_char: str = '0'):
+    """
+    Given a list of files, return a dict which represents how each file will be transformed
+    after extending the file length by appending a filler character to the left of the file.
+    """
+
     file_extension: str = get_file_extension(files[0])
 
     current_names = {file: Path(file).stem for file in files}
@@ -65,9 +73,26 @@ def extend_files(files: list[str], target_folder: Path, filler_char: str = '0'):
         file: filler_char * max(digit_count - len(name), 0) + name
         for file, name in current_names.items()
     }
-    new_names = {
-        file: f"{name}{file_extension}" for file, name in extended_names.items()
+    result = {
+        target_folder / file: target_folder / f"{name}{file_extension}" for file, name in extended_names.items()
     }
 
-    for file, name in new_names.items():
-        shutil.move(target_folder / file, target_folder / name)
+    return result
+
+
+def show_result(result: dict[Path, Path]) -> None:
+    table = Table(title="Result")
+    table.add_column("Previous Name")
+    table.add_column("New Name")
+    for old_name, new_name in result.items():
+        table.add_row(old_name.name, new_name.name)
+    print(table)
+
+
+def execute_modification(result: dict[Path, Path]) -> bool:
+    try:
+        for old_name, new_name in track(result.items(), description="Modifying files..."):
+            shutil.move(old_name, new_name)
+        return True
+    except Exception:
+        return False

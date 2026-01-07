@@ -6,9 +6,11 @@ from rich.console import Console  # type: ignore
 from typing_extensions import Annotated
 
 from ..core.utils import (
+    execute_modification,
     extend_files,
     select_directory,
     get_default_path,
+    show_result,
 )
 
 app = typer.Typer()
@@ -34,4 +36,9 @@ def extend(
         print("The specified directory is empty.")
         return
 
-    extend_files(files, target_folder)
+    result = extend_files(files, target_folder)
+    show_result(result)
+    if typer.confirm(f"Are you sure you want to extend the file names?"):
+        execute_modification(result)
+    else:
+        print("Operation cancelled.")
