@@ -1,3 +1,4 @@
+from pathlib import Path
 import shutil
 import os
 import typer  # type: ignore
@@ -20,7 +21,7 @@ err_console = Console(stderr=True)
 def rename(
     start: Annotated[int, typer.Option(help="The name of the starting file.")] = 0,
     digit_count: Annotated[int, typer.Option(help="The number of digits the output files should have.")] = 4,
-    path: Annotated[str, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
+    path: Annotated[Path, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
     Used to rename all the files within the folder such that all file names have the same number of digits.
@@ -33,19 +34,19 @@ def rename(
     """
 
     selected: str = select_directory(path)
-    main_folder = os.path.join(path, selected)
+    target_folder = Path(path) / selected
 
-    if not change_directory(main_folder):
+    if not change_directory(target_folder):
         err_console.print("Failed to find the specified path")
         return
     else:
-        print(f"Renaming file in {main_folder}")
+        print(f"Renaming file in {target_folder}")
 
     if len(os.listdir()) == 0:
         print("The specified directory is empty.")
         return
 
-    extend_files(os.listdir(), main_folder)
+    extend_files(os.listdir(), target_folder)
 
     files = sorted(os.listdir())
     file_extension = files[0].rsplit(".")[-1]
@@ -62,6 +63,6 @@ def rename(
     }
 
     for file, name in new_names.items():
-        shutil.move(f"{main_folder}\\{file}", f"{main_folder}\\{name}")
+        shutil.move(f"{target_folder}\\{file}", f"{target_folder}\\{name}")
 
     print("Files within the folder have been renamed successfully.")

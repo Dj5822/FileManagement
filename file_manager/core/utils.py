@@ -7,15 +7,15 @@ import yaml
 
 
 def load_config():
-    CONFIG_FILE_PATH = "./config.yaml"
+    CONFIG_FILE_PATH = Path("./config.yaml")
     with open(CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
         config_data = yaml.load(file, Loader=yaml.FullLoader)
         return config_data
 
 
-def get_default_path():
+def get_default_path() -> Path:
     config = load_config()
-    return config["default-path"]
+    return Path(config["default-path"])
 
 
 def select_directory(path: str) -> str:
@@ -36,7 +36,7 @@ def select_directory(path: str) -> str:
     return selected_directory["directory"]
 
 
-def change_directory(new_path: str) -> bool:
+def change_directory(new_path: Path) -> bool:
     """
     Set the working directory.
     Returns true when directory changed successfully.

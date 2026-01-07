@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import typer  # type: ignore
 from rich import print  # type: ignore
 from rich.console import Console  # type: ignore
@@ -17,7 +18,7 @@ err_console = Console(stderr=True)
 
 @app.command()
 def extend(
-    path: Annotated[str, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
+    path: Annotated[Path, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
     Given a directory of files, it will rename all the files within that directory
@@ -27,13 +28,13 @@ def extend(
     """
 
     selected: str = select_directory(path)
-    main_folder = os.path.join(path, selected)
+    target_folder = Path(path) / selected
 
-    if not change_directory(main_folder):
+    if not change_directory(target_folder):
         err_console.print("Failed to find the specified path")
         return
     else:
-        print(f"Extending {main_folder}")
+        print(f"Extending {target_folder}")
 
     if len(os.listdir()) == 0:
         print("The specified directory is empty.")
@@ -41,4 +42,4 @@ def extend(
 
     files = os.listdir()
 
-    extend_files(files, main_folder)
+    extend_files(files, target_folder)

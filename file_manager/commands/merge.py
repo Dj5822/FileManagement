@@ -1,3 +1,4 @@
+from pathlib import Path
 import shutil
 import os
 import typer  # type: ignore
@@ -13,7 +14,7 @@ err_console = Console(stderr=True)
 
 @app.command()
 def merge(
-    path: Annotated[str, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
+    path: Annotated[Path, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
     Used to merge to folders together while maintaining order.
@@ -21,14 +22,14 @@ def merge(
 
     print("Select the survivor directory.")
     survivor: str = select_directory(path)
-    survivor_folder = os.path.join(path, survivor)
+    survivor_folder = Path(path) / survivor
 
     if not change_directory(survivor_folder):
         err_console.print("Failed to find the specified path")
 
     print("Select the victim directory.")
     victim: str = select_directory(path)
-    merge_folder = os.path.join(path, victim)
+    merge_folder = Path(path) / victim
 
     if not change_directory(merge_folder):
         err_console.print("Failed to find the specified path")
