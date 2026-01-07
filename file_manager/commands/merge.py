@@ -13,15 +13,11 @@ err_console = Console(stderr=True)
 
 @app.command()
 def merge(
-    path: Annotated[
-        str, typer.Option(help="The directory to apply the command.")
-    ] = None,
+    path: Annotated[str, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
     Used to merge to folders together while maintaining order.
     """
-
-    path = get_default_path() if path is None else path
 
     print("Select the survivor directory.")
     survivor: str = select_directory(path)

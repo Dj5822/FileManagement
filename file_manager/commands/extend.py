@@ -17,18 +17,14 @@ err_console = Console(stderr=True)
 
 @app.command()
 def extend(
-    path: Annotated[
-        str, typer.Option(help="The directory to apply the command.")
-    ] = None,
+    path: Annotated[str, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
     Given a directory of files, it will rename all the files within that directory
-    such that all the file names are the same length.
+    such that all the file names have the same length.
     Typically, this will be done by adding '0' to the front of each file name
     until the length matches the largest file length.
     """
-
-    path = get_default_path() if path is None else path
 
     selected: str = select_directory(path)
     main_folder = os.path.join(path, selected)

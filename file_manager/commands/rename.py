@@ -19,12 +19,8 @@ err_console = Console(stderr=True)
 @app.command()
 def rename(
     start: Annotated[int, typer.Option(help="The name of the starting file.")] = 0,
-    digit_count: Annotated[
-        int, typer.Option(help="The number of digits the output files should have.")
-    ] = 4,
-    path: Annotated[
-        str, typer.Option(help="The directory to apply the command.")
-    ] = None,
+    digit_count: Annotated[int, typer.Option(help="The number of digits the output files should have.")] = 4,
+    path: Annotated[str, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
     Used to rename all the files within the folder such that all file names have the same number of digits.
@@ -35,8 +31,6 @@ def rename(
 
     Then after renaming, all the files we be changed to: 001.png 022.png 390.png
     """
-
-    path = get_default_path() if path is None else path
 
     selected: str = select_directory(path)
     main_folder = os.path.join(path, selected)
