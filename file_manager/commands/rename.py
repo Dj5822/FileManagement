@@ -8,9 +8,12 @@ from typing_extensions import Annotated
 
 from ..core.utils import (
     change_directory,
+    execute_modification,
     extend_files,
+    get_file_extension,
     select_directory,
     get_default_path,
+    show_result,
 )
 
 app = typer.Typer()
@@ -35,21 +38,17 @@ def rename(
 
     selected: str = select_directory(path)
     target_folder = Path(path) / selected
+    files = os.listdir(target_folder)
 
-    if not change_directory(target_folder):
-        err_console.print("Failed to find the specified path")
-        return
-    else:
-        print(f"Renaming file in {target_folder}")
-
-    if len(os.listdir()) == 0:
+    if len(files) == 0:
         print("The specified directory is empty.")
         return
 
-    extend_files(os.listdir(), target_folder)
+    extension_result = extend_files(files, target_folder)
+    execute_modification(extension_result)
 
-    files = sorted(os.listdir())
-    file_extension = files[0].rsplit(".")[-1]
+    files = sorted(os.listdir(target_folder))
+    file_extension = get_file_extension(files[0])
 
     digit_count = len(str(start + len(files))) if digit_count is None else digit_count
 
@@ -58,11 +57,16 @@ def rename(
         file: "0" * max(digit_count - len(file_nums[i]), 0) + file_nums[i]
         for i, file in enumerate(files)
     }
-    new_names = {
-        file: f"{name}.{file_extension}" for file, name in processed_names.items()
+    result = {
+        target_folder / file: target_folder / f"{name}{file_extension}" for file, name in processed_names.items()
     }
 
-    for file, name in new_names.items():
-        shutil.move(f"{target_folder}\\{file}", f"{target_folder}\\{name}")
+    show_result(result)
 
-    print("Files within the folder have been renamed successfully.")
+    if typer.confirm(f"Are you sure you want to extend the file names?"):
+        execute_modification(result)
+        print("Files within the folder have been renamed successfully.")
+    else:
+        print("Operation cancelled.")
+
+

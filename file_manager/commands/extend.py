@@ -37,8 +37,11 @@ def extend(
         return
 
     result = extend_files(files, target_folder)
+    
     show_result(result)
+
     if typer.confirm(f"Are you sure you want to extend the file names?"):
         execute_modification(result)
+        print("Files within the folder have been extended successfully.")
     else:
         print("Operation cancelled.")
