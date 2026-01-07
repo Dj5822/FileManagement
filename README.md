@@ -10,7 +10,7 @@ This program can rename files in a particular pattern and merge two folders toge
 Run the following commands:
 
 `pipx install uv`
-`uv run main.py`
+`uv run -m main`
 
 ## Config file
 
