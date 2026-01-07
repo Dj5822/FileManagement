@@ -10,7 +10,7 @@ This program can rename files in a particular pattern and merge two folders toge
 Run the following commands:
 
 `pipx install uv`
-`uv run -m main`
+`uv run -m file_manager`
 
 ## Config file
 
@@ -21,9 +21,9 @@ Alternatively, you can pass in the path you want to use a command line option wh
 
 When modifying this project, you use the following command to check formatting and typing issues:
 
-`uvx mypy main.py`
-`uvx ruff check main.py`
-`uvx ruff format main.py`
+`uvx mypy file_manager`
+`uvx ruff check file_manager`
+`uvx ruff format file_manager`
 
 ## Rename
 
