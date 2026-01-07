@@ -54,21 +54,20 @@ def get_file_extension(file_name: str) -> str:
     """
     Given a file name, returns the file extension.
     """
-    return file_name.rsplit(".")[-1]
+    return Path(file_name).suffix
 
-
-def extend_files(files, main_folder):
+def extend_files(files: list[str], target_folder: Path, filler_char: str = '0'):
     file_extension: str = get_file_extension(files[0])
 
-    current_names = {file: file.rsplit(".")[0] for file in files}
+    current_names = {file: Path(file).stem for file in files}
     digit_count = max(len(file) for file in current_names.values())
     extended_names = {
-        file: "0" * max(digit_count - len(name), 0) + name
+        file: filler_char * max(digit_count - len(name), 0) + name
         for file, name in current_names.items()
     }
     new_names = {
-        file: f"{name}.{file_extension}" for file, name in extended_names.items()
+        file: f"{name}{file_extension}" for file, name in extended_names.items()
     }
 
     for file, name in new_names.items():
-        shutil.move(f"{main_folder}\\{file}", f"{main_folder}\\{name}")
+        shutil.move(target_folder / file, target_folder / name)

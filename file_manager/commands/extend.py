@@ -6,7 +6,6 @@ from rich.console import Console  # type: ignore
 from typing_extensions import Annotated
 
 from ..core.utils import (
-    change_directory,
     extend_files,
     select_directory,
     get_default_path,
@@ -29,17 +28,10 @@ def extend(
 
     selected: str = select_directory(path)
     target_folder = Path(path) / selected
+    files = os.listdir(target_folder)
 
-    if not change_directory(target_folder):
-        err_console.print("Failed to find the specified path")
-        return
-    else:
-        print(f"Extending {target_folder}")
-
-    if len(os.listdir()) == 0:
+    if len(files) == 0:
         print("The specified directory is empty.")
         return
-
-    files = os.listdir()
 
     extend_files(files, target_folder)
