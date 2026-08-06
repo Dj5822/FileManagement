@@ -63,7 +63,7 @@ def rename(
 
     show_result(result)
 
-    if typer.confirm(f"Are you sure you want to extend the file names?"):
+    if typer.confirm(f"Are you sure you want to rename the file names?"):
         execute_modification(result)
         print("Files within the folder have been renamed successfully.")
     else:

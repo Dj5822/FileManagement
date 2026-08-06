@@ -21,9 +21,6 @@ def get_default_path() -> Path:
 
 
 def select_directory(path: str) -> str:
-    """
-    By default, the program path is set to C:\\Users\\Dj582\\Downloads\\
-    """
     directories = [d.name for d in Path(path).iterdir() if d.is_dir()]
 
     questions = [

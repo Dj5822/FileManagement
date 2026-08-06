@@ -9,7 +9,7 @@ This program can rename files in a particular pattern and merge two folders toge
 
 Run the following commands:
 
-`pipx install uv`
+`uv sync`
 `uv run -m file_manager`
 
 ## Config file
