@@ -20,7 +20,7 @@ def get_default_path() -> Path:
     return Path(config["default-path"])
 
 
-def select_directory(path: str) -> str:
+def select_directory(path: Path) -> str:
     directories = [d.name for d in Path(path).iterdir() if d.is_dir()]
 
     questions = [
@@ -32,7 +32,7 @@ def select_directory(path: str) -> str:
     ]
 
     selected_directory = inquirer.prompt(questions)
-    return selected_directory["directory"]
+    return selected_directory["directory"] # type: ignore
 
 
 def change_directory(new_path: Path) -> bool:
@@ -49,7 +49,7 @@ def change_directory(new_path: Path) -> bool:
         return False
 
 
-def get_file_extension(file_name: str) -> str:
+def get_file_extension(file_name: str | Path) -> str:
     """
     Given a file name, returns the file extension.
     """
@@ -62,8 +62,7 @@ def extend_files(files: list[str], target_folder: Path, filler_char: str = '0'):
     after extending the file length by appending a filler character to the left of the file.
     """
 
-    file_extension: str = get_file_extension(files[0])
-
+    file_extensions = {file: get_file_extension(file) for file in files}
     current_names = {file: Path(file).stem for file in files}
     digit_count = max(len(file) for file in current_names.values())
     extended_names = {
@@ -71,7 +70,7 @@ def extend_files(files: list[str], target_folder: Path, filler_char: str = '0'):
         for file, name in current_names.items()
     }
     result = {
-        target_folder / file: target_folder / f"{name}{file_extension}" for file, name in extended_names.items()
+        target_folder / file: target_folder / f"{name}{file_extensions[file]}" for file, name in extended_names.items()
     }
 
     return result

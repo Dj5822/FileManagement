@@ -1,5 +1,4 @@
 from pathlib import Path
-import shutil
 import os
 import typer  # type: ignore
 from rich import print  # type: ignore
@@ -7,7 +6,6 @@ from rich.console import Console  # type: ignore
 from typing_extensions import Annotated
 
 from ..core.utils import (
-    change_directory,
     execute_modification,
     extend_files,
     get_file_extension,
@@ -44,22 +42,17 @@ def rename(
         print("The specified directory is empty.")
         return
 
-    extension_result = extend_files(files, target_folder)
-    execute_modification(extension_result)
+    original_to_extended = extend_files(files, target_folder)
+    extended_to_original = { extended: original for original, extended in original_to_extended.items() }
+    extended = sorted(original_to_extended.values())
 
-    files = sorted(os.listdir(target_folder))
-    file_extension = get_file_extension(files[0])
-
-    digit_count = len(str(start + len(files))) if digit_count is None else digit_count
+    digit_count = len(str(start + len(extended))) if digit_count is None else digit_count
 
     file_nums = [str(file_num) for file_num in range(start, start + len(files))]
-    processed_names = {
-        file: "0" * max(digit_count - len(file_nums[i]), 0) + file_nums[i]
-        for i, file in enumerate(files)
-    }
-    result = {
-        target_folder / file: target_folder / f"{name}{file_extension}" for file, name in processed_names.items()
-    }
+
+    processed_names = { file : "0" * max(digit_count - len(file_nums[i]), 0) + file_nums[i] for i, file in enumerate(extended) }
+
+    result = { target_folder / extended_to_original[file] : target_folder / f"{name}{get_file_extension(file)}" for file, name in processed_names.items() }
 
     show_result(result)
 
