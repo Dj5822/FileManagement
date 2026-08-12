@@ -17,7 +17,7 @@ def merge(
     path: Annotated[Path, typer.Option(help="Used to configure the working directory.")] = get_default_path(),
 ) -> None:
     """
-    Used to merge to folders together while maintaining order.
+    Used to merge two folders together while maintaining order.
     """
 
     print("Select the survivor directory.")
